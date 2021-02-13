@@ -1,10 +1,10 @@
-package com.lab1;
+package ru.nsu.fit.g19202.jul.task1;
 
 import java.util.List;
 
 public class Word {
     private String _word;
-    private int _freq;
+    private Integer _freq;
 
     public Word(String word, int i) {
         this._word = word;
@@ -14,7 +14,7 @@ public class Word {
     public String get_word() {
         return _word;
     }
-    public int get_freq() {
+    public Integer get_freq() {
         return _freq;
     }
     public void change_freq() {

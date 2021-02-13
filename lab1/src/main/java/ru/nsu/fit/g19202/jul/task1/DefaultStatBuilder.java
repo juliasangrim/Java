@@ -1,13 +1,13 @@
-package com.lab1;
+package ru.nsu.fit.g19202.jul.task1;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.Map;
 
-public class Reader implements iReader{
-    public static void readerFile(String fileName, Map<String, Word> words) throws IOException {
-        try (FileReader in = new FileReader(fileName)) {
+public class DefaultStatBuilder implements StatBuilder {
+    public int readWords(Reader in, Map<String, Word> words) throws IOException {
+        int total = 0;
             StringBuilder word = new StringBuilder();
             int c;
             while ((c = in.read()) != -1) {
@@ -23,8 +23,10 @@ public class Reader implements iReader{
                         return prev;
                     });
                     word.setLength(0);
+                    total++;
                 }
             }
+
             if (word.length() > 0) {
                 String finalWord = word.toString();
                 words.compute(finalWord, (key, prev) -> {
@@ -33,10 +35,8 @@ public class Reader implements iReader{
                     return prev;
                 });
                 word.setLength(0);
+                total++;
             }
-        }
-        catch (IOException e) {
-          e.printStackTrace();
-        }
-    };
+        return total;
+    }
 }
