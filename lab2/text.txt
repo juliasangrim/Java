@@ -1,0 +1,9 @@
+define a
+push a
+push 2
+*
+#comment
+print
+print
+pop
+print
