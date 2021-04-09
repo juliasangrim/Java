@@ -29,7 +29,7 @@ public class PushTests {
     }
 
     @Test
-    public void testPushEmpty() throws CommandException {
+    public void testPushEmpty() {
         CalcContext context = new CalcContext();
         Push push = new Push();
         String[] args = new String[1];

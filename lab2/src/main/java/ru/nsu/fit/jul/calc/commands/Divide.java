@@ -10,7 +10,7 @@ public class Divide implements Command {
     public void execute(String[] args, CalcContext context) throws CommandException {
         Deque<Double> stack = context.getStack();
         if (stack.size() < 2) {
-            throw new CommandException("Di  vide command expects 2 values in stack.");
+            throw new CommandException("Divide command expects 2 values in stack.");
         }
         var arg1 = stack.pop();
         var arg2 = stack.pop();

@@ -10,7 +10,7 @@ public class CommandFactory {
         private static final CommandFactory factory = new CommandFactory();
     }
 
-    Map<String, Command> commands = new HashMap<>();
+    private final Map<String, Command> commands = new HashMap<>();
 
     public static CommandFactory getInstance() {
         return Helper.factory;

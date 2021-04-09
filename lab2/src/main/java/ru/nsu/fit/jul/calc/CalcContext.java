@@ -8,8 +8,8 @@ import java.util.Map;
 
 
 public class CalcContext {
-    private Deque<Double> stack = new ArrayDeque<>();
-    private Map<String, Double> params = new HashMap<>();
+    private final Deque<Double> stack = new ArrayDeque<>();
+    private final Map<String, Double> params = new HashMap<>();
 
     public Deque<Double> getStack()
     {
@@ -21,7 +21,4 @@ public class CalcContext {
         return params;
     }
 
-    public void updateStack(Deque<Double> newStack) {
-        stack = newStack;
-    }
 }

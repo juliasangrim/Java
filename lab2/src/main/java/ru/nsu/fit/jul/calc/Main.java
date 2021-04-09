@@ -2,7 +2,6 @@ package ru.nsu.fit.jul.calc;
 
 import ru.nsu.fit.jul.calc.logger.CalcLogger;
 
-import java.util.Arrays;
 import java.util.logging.*;
 
 
@@ -37,25 +36,25 @@ public class Main {
                     break;
                 }
 
-                    if (arg.startsWith("#")) {
-                        continue;
-                    }
-                    if (arg.toString().equals("EXIT")) {
-                        break;
-                    }
-                    var cmdArgs = arg.split(" ");
-                    var command = factory.findCommandByName(cmdArgs[0]);
-                    if (command == null) {
-                        System.out.println("No such command\n");
-                        logger.info("The user input the wrong command.");
-                        continue;
-                    }
-                    command.execute(cmdArgs, context);
-                logger.info("The result of command " + cmdArgs[0] + " is received.");
+                if (arg.startsWith("#")) {
+                    continue;
                 }
-            } catch (Exception e) {
-             e.printStackTrace();
-             logger.severe("Caught the exception from " + Arrays.toString(e.getStackTrace()) + " with message " + e.getMessage());
+                if (arg.equals("EXIT")) {
+                    break;
+                }
+                var cmdArgs = arg.split(" ");
+                var command = factory.findCommandByName(cmdArgs[0]);
+                if (command == null) {
+                    System.out.println("No such command\n");
+                    logger.info("The user input the wrong command.");
+                    continue;
+                }
+                command.execute(cmdArgs, context);
+                logger.info("The result of command " + cmdArgs[0] + " is received.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.log(Level.SEVERE, "Caught the exception with message ", e);
         }
         logger.info("Program is ended.");
     }

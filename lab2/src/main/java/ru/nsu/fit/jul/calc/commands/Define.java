@@ -3,7 +3,6 @@ package ru.nsu.fit.jul.calc.commands;
 import ru.nsu.fit.jul.calc.CalcContext;
 import ru.nsu.fit.jul.calc.Command;
 
-import java.util.Deque;
 import java.util.Map;
 
 public class Define implements Command {

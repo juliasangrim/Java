@@ -18,7 +18,7 @@ public class PrintTests {
     }
 
     @Test
-    public void testPrintEmpty() throws CommandException {
+    public void testPrintEmpty() {
         CalcContext context = new CalcContext();
         Print print = new Print();
         assertThrows(CommandException.class, ()->print.execute(null, context));

@@ -1,6 +1,14 @@
-Apr 08, 2021 4:35:13 PM ru.nsu.fit.jul.calc.Main main
+апр. 09, 2021 11:06:38 AM ru.nsu.fit.jul.calc.Main main
 INFO: Start the program.
-Apr 08, 2021 4:35:13 PM ru.nsu.fit.jul.calc.Main main
+апр. 09, 2021 11:06:38 AM ru.nsu.fit.jul.calc.Main main
 INFO: Open the console.
-Apr 08, 2021 4:35:22 PM ru.nsu.fit.jul.calc.Main main
+апр. 09, 2021 11:06:44 AM ru.nsu.fit.jul.calc.Main main
+INFO: The result of command push is received.
+апр. 09, 2021 11:06:46 AM ru.nsu.fit.jul.calc.Main main
+INFO: The result of command push is received.
+апр. 09, 2021 11:06:48 AM ru.nsu.fit.jul.calc.Main main
+INFO: The result of command * is received.
+апр. 09, 2021 11:06:50 AM ru.nsu.fit.jul.calc.Main main
+INFO: The result of command print is received.
+апр. 09, 2021 11:06:53 AM ru.nsu.fit.jul.calc.Main main
 INFO: Program is ended.

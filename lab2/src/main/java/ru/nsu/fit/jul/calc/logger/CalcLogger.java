@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.logging.*;
 
 public class CalcLogger {
-    static private FileHandler fileTxt;
-    static private SimpleFormatter formatterTxt;
 
     static public void setup() throws IOException {
         // get the global logger to configure it
@@ -19,9 +17,9 @@ public class CalcLogger {
         }
 
         logger.setLevel(Level.CONFIG);
-        fileTxt = new FileHandler("Logging.txt");;
+        FileHandler fileTxt = new FileHandler("Logging.txt");
         // create a TXT formatter
-        formatterTxt = new SimpleFormatter();
+        SimpleFormatter formatterTxt = new SimpleFormatter();
         fileTxt.setFormatter(formatterTxt);
         logger.addHandler(fileTxt);
     }
