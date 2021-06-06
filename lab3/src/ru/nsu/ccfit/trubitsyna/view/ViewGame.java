@@ -12,23 +12,32 @@ public class ViewGame extends JFrame implements IListener {
     private BoardDraw boardDraw;
     private Panel panel;
     private GameModel model;
-
+    private Menu menu;
 
     @Override
     public void modelChanged(GameModel model) {
-        boardDraw.repaint();
-        panel.repaint();
+        if (model.getGameState() == ViewState.GAME) {
+            if (model.isNewGame()) {
+                add(boardDraw, BorderLayout.CENTER);
+                add(panel, BorderLayout.EAST);
+                pack();
+            }
+            boardDraw.repaint();
+            panel.repaint();
+        }
+        else {
+            menu.repaint();
+        }
     }
 
     public void openBoard() {
         setLayout(new BorderLayout());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setResizable(false);
-
-        this.boardDraw = new BoardDraw(model);
-        this.panel = new Panel(model);
-        add(boardDraw,  BorderLayout.CENTER);
-        add(panel, BorderLayout.EAST);
+//        add(boardDraw,  BorderLayout.CENTER);
+//        add(panel, BorderLayout.EAST);
+        this.menu = new Menu();
+        add(menu, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
@@ -37,6 +46,9 @@ public class ViewGame extends JFrame implements IListener {
     public void setModel(GameModel gameModel) {
         noListen();
         this.model = gameModel;
+        this.boardDraw = new BoardDraw(model);
+        this.panel = new Panel(model);
+       // this.menu = new Menu();
         openBoard();
         listen();
     }

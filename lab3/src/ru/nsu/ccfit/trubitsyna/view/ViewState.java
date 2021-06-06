@@ -1,4 +1,4 @@
-package ru.nsu.ccfit.trubitsyna.controller;
+package ru.nsu.ccfit.trubitsyna.view;
 
 public enum ViewState {
     MENU,

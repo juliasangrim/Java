@@ -1,5 +1,6 @@
 package ru.nsu.ccfit.trubitsyna.model;
 
+import ru.nsu.ccfit.trubitsyna.view.ViewState;
 import ru.nsu.ccfit.trubitsyna.view.TileType;
 
 import javax.swing.*;
@@ -11,7 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameModel extends JFrame {
     private CopyOnWriteArrayList<IListener> listeners = new CopyOnWriteArrayList<IListener>();
-    private int state;
+    private ViewState state;
     private Board board;
     private Random random;
     private Snake snake;
@@ -30,10 +31,10 @@ public class GameModel extends JFrame {
         this.score = 0;
         this.direction = new ArrayDeque<Directions>();
         this.direction.push(Directions.UP);
-        this.isNewGame = false;
+        this.isNewGame = true;
         this.isGameEnd = false;
+        this.state = ViewState.MENU;
     }
-    //TODO reset game
 
     private void resetGame() {
         this.score = 0;
@@ -113,27 +114,27 @@ public class GameModel extends JFrame {
     }
 
     public void startRound() {
-        long startTime = System.nanoTime();
-        spawnFruit();
-        Point head = new Point(board.getColumnCount() / 2, board.getRowCount() / 2);
-        snake.addNewHead(head);
-        board.setTile(head, TileType.SNAKE_HEAD);
         while (true) {
-            if (isNewGame) {
-                resetGame();
-            }
-            if (!isGameEnd) {
-                if (!isPaused) {
-                    updateGame();
+            if (state == ViewState.GAME) {
+                if (isNewGame) {
+                    notifyListeners();
+                    resetGame();
+                }
+                if (!isGameEnd) {
+                    if (!isPaused) {
+                        updateGame();
+                    }
                 }
             }
 
             notifyListeners();
+            if (state == ViewState.GAME) {
                 try {
                     Thread.sleep(70);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
         }
     }
 
@@ -194,6 +195,10 @@ public class GameModel extends JFrame {
         return isPaused;
     }
 
+    public boolean isNewGame() {
+        return isNewGame;
+    }
+
     public int getScore() {
         return score;
     }
@@ -214,5 +219,13 @@ public class GameModel extends JFrame {
     }
     public void offPause() {
         this.isPaused = false;
+    }
+
+    public ViewState getGameState() {
+        return this.state;
+    }
+
+    public void setGameState(ViewState state) {
+        this.state = state;
     }
 }

@@ -31,15 +31,12 @@ public class BoardDraw extends JPanel {
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
         String gameMessage = null;
-        String infoMessage = null;
         if (model.isEnd()) {
             gameMessage = "You died! :)";
-            infoMessage= "Press F to pay respect(reset game)...";
-            Font font = new Font("Arial", Font.BOLD, 25);
+            Font font = new Font("Arial", Font.BOLD, 60);
             graphics.setColor(Color.DARK_GRAY);
             graphics.setFont(font);
-            graphics.drawString(gameMessage, centerX - graphics.getFontMetrics().stringWidth(gameMessage) / 2, centerY - 50);
-            graphics.drawString(infoMessage, centerX - graphics.getFontMetrics().stringWidth(infoMessage) / 2, centerY + 50);
+            graphics.drawString(gameMessage, centerX - graphics.getFontMetrics().stringWidth(gameMessage) / 2, centerY);
         }
 
     }

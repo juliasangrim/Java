@@ -3,16 +3,17 @@ package ru.nsu.ccfit.trubitsyna.controller;
 import ru.nsu.ccfit.trubitsyna.model.Directions;
 import ru.nsu.ccfit.trubitsyna.model.GameModel;
 import ru.nsu.ccfit.trubitsyna.view.ViewGame;
+import ru.nsu.ccfit.trubitsyna.view.ViewState;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class Controller extends KeyAdapter {
+public class KeyController extends KeyAdapter {
     private GameModel model;
     private ViewGame view;
     private static final int MAX_DIRECT = 2;
 
-    public Controller(GameModel model, ViewGame viewGame) {
+    public KeyController(GameModel model, ViewGame viewGame) {
         this.model = model;
         this.view = viewGame;
         viewGame.setModel(model);
@@ -90,6 +91,11 @@ public class Controller extends KeyAdapter {
                     model.offPause();
                 }
                 break;
+            case KeyEvent.VK_B:
+                model.setGameState(ViewState.MENU);
+                model.setNewGame();
+                break;
+
         }
     }
 
