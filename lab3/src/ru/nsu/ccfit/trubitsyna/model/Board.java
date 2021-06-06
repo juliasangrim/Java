@@ -29,6 +29,11 @@ public class Board {
         return tiles[y * ROW_COUNT + x];
     }
 
+    public void clear() {
+        for(int i = 0; i < tiles.length; i++) {
+            tiles[i] = null;
+        }
+    }
     public void setTile(Point point, TileType tile) {
         setTile(point.x, point.y, tile);
     }

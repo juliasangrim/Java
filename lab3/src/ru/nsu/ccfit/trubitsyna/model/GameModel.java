@@ -30,13 +30,26 @@ public class GameModel extends JFrame {
         this.score = 0;
         this.direction = new ArrayDeque<Directions>();
         this.direction.push(Directions.UP);
-        this.isNewGame = true;
+        this.isNewGame = false;
         this.isGameEnd = false;
     }
     //TODO reset game
 
     private void resetGame() {
+        this.score = 0;
+        this.isGameEnd = false;
+        this.isNewGame = false;
+        board.clear();
+        this.snake = new Snake();
 
+        Point head = new Point(board.getColumnCount() / 2, board.getRowCount() / 2);
+        snake.addNewHead(head);
+        board.setTile(head, TileType.SNAKE_HEAD);
+
+        direction.clear();
+        direction.add(Directions.UP);
+
+        spawnFruit();
     }
 
     //notify listeners about changes
@@ -106,6 +119,9 @@ public class GameModel extends JFrame {
         snake.addNewHead(head);
         board.setTile(head, TileType.SNAKE_HEAD);
         while (true) {
+            if (isNewGame) {
+                resetGame();
+            }
             if (!isGameEnd) {
                 if (!isPaused) {
                     updateGame();
@@ -193,7 +209,9 @@ public class GameModel extends JFrame {
     public void setOnPause() {
         this.isPaused = true;
     }
-
+    public void setNewGame() {
+        this.isNewGame = true;
+    }
     public void offPause() {
         this.isPaused = false;
     }

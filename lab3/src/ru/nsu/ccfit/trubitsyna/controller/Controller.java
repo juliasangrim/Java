@@ -22,8 +22,6 @@ public class Controller extends KeyAdapter {
     public void execute() {
         model.startRound();
     }
-    //TODO pause
-    //TODO exit
 
     @Override
     public void keyPressed(KeyEvent e) {
@@ -85,6 +83,13 @@ public class Controller extends KeyAdapter {
                 break;
             case KeyEvent.VK_ESCAPE:
                 view.dispose();
+                break;
+            case KeyEvent.VK_F:
+                model.setNewGame();
+                if (model.isPause()) {
+                    model.offPause();
+                }
+                break;
         }
     }
 

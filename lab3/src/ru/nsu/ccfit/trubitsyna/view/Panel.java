@@ -27,11 +27,12 @@ public class Panel extends JPanel {
         graphics.drawString("Total Score: " + model.getScore(), 50, drawY += 30);
         graphics.drawString("Fruit Eaten: " + model.getAmountEatenFruit(), 50, drawY += 30);
         graphics.drawString("Fruit Score: " + model.getFruitScore(), 50, drawY += 30);
-        graphics.setFont(BIG_FONT);
-        drawY = 600;
+        graphics.setFont(SMALL_FONT);
+        drawY = 500;
         graphics.drawString("Some instructions: ", 30, drawY);
-        graphics.drawString("P - pause ", 30, drawY+=30);
-        graphics.drawString("F - back to menu ", 30, drawY+=30);
-        graphics.drawString("Esc - exit ", 30, drawY+=30);
+        graphics.drawString("P - pause ", 50, drawY+=30);
+        graphics.drawString("F - reset game ", 50, drawY+=30);
+        graphics.drawString("B - back to menu ", 50, drawY+=30);
+        graphics.drawString("Esc - exit ", 50, drawY+=30);
     }
 }
