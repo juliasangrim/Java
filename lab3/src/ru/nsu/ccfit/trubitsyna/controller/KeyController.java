@@ -93,6 +93,7 @@ public class KeyController extends KeyAdapter {
                 String name = view.getUserName();
                 if (name == null) {
                     model.setGameState(ViewState.MENU);
+                    model.offPause();
                     return;
                 }
                 model.resetGame(name);
