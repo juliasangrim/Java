@@ -1,5 +1,6 @@
 package ru.nsu.ccfit.trubitsyna.controller;
 
+import ru.nsu.ccfit.trubitsyna.gameException.GameException;
 import ru.nsu.ccfit.trubitsyna.model.Directions;
 import ru.nsu.ccfit.trubitsyna.model.GameModel;
 import ru.nsu.ccfit.trubitsyna.view.ViewGame;
@@ -7,20 +8,21 @@ import ru.nsu.ccfit.trubitsyna.view.ViewState;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 public class KeyController extends KeyAdapter {
-    private GameModel model;
-    private ViewGame view;
+    private final GameModel model;
+    private final ViewGame view;
     private static final int MAX_DIRECT = 2;
 
-    public KeyController(GameModel model, ViewGame viewGame) {
+    public KeyController(GameModel model, ViewGame viewGame) throws IOException, GameException {
         this.model = model;
         this.view = viewGame;
         viewGame.setModel(model);
         this.view.addKeyListener(this);
     }
 
-    public void execute() {
+    public void execute() throws IOException, GameException {
         model.startRound();
     }
 
@@ -73,8 +75,8 @@ public class KeyController extends KeyAdapter {
                         }
                     }
                     System.out.println("right");
-                    break;
                 }
+                break;
             case KeyEvent.VK_P:
                 if (!model.isPause()) {
                     model.setOnPause();
@@ -86,10 +88,16 @@ public class KeyController extends KeyAdapter {
                 view.dispose();
                 break;
             case KeyEvent.VK_F:
+                model.setOnPause();
                 model.setNewGame();
-                if (model.isPause()) {
-                    model.offPause();
+                String name = view.getUserName();
+                if (name == null) {
+                    model.setGameState(ViewState.MENU);
+                    return;
                 }
+                model.resetGame(name);
+                model.offPause();
+                model.setGameState(ViewState.GAME);
                 break;
             case KeyEvent.VK_B:
                 model.setGameState(ViewState.MENU);

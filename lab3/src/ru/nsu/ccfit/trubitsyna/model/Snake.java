@@ -6,7 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class Snake {
-    private Deque<Point> body;
+    private final Deque<Point> body;
     private int fruitEaten;
     public static final int START_LENGTH = 4;
     public Snake() {
@@ -23,19 +23,10 @@ public class Snake {
             head = new Point();
         }
         switch (direction) {
-            case UP:
-               head.y--;
-               break;
-            case DOWN:
-                head.y++;
-                break;
-            case LEFT:
-                head.x--;
-                break;
-            case RIGHT:
-                head.x++;
-                break;
-
+            case UP -> head.y--;
+            case DOWN -> head.y++;
+            case LEFT -> head.x--;
+            case RIGHT -> head.x++;
         }
         return head;
     }

@@ -4,5 +4,6 @@ public enum ViewState {
     MENU,
     ABOUT,
     TABLE,
-    GAME
+    GAME,
+    RECORD
 }

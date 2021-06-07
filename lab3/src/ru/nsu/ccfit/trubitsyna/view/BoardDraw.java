@@ -7,12 +7,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoardDraw extends JPanel {
-    private GameModel model;
-    private Board board;
+    private final GameModel model;
+    private final Board board;
     public static int width;
     public static int height;
     public static final int TILE_SIZE = 20;
-    public TileType[] tiles;
 
     public BoardDraw(GameModel gameModel) {
         this.model = gameModel;
@@ -30,7 +29,7 @@ public class BoardDraw extends JPanel {
         graphics.setColor(Color.GRAY);
         int centerX = getWidth() / 2;
         int centerY = getHeight() / 2;
-        String gameMessage = null;
+        String gameMessage;
         if (model.isEnd()) {
             gameMessage = "You died! :)";
             Font font = new Font("Arial", Font.BOLD, 60);
@@ -53,22 +52,20 @@ public class BoardDraw extends JPanel {
     }
 
     private void drawTile(TileType tile, Graphics graphics, int x, int y) {
-        switch(tile) {
-            case FRUIT:
+        //Fill the tile in with green.
+        switch (tile) {
+            case FRUIT -> {
                 graphics.setColor(Color.RED);
                 graphics.fillOval(x + 2, y + 2, TILE_SIZE - 4, TILE_SIZE - 4);
-                break;
-
-            case SNAKE_BODY:
+            }
+            case SNAKE_BODY -> {
                 graphics.setColor(Color.GREEN);
                 graphics.fillOval(x, y, TILE_SIZE, TILE_SIZE);
-                break;
-
-            case SNAKE_HEAD:
-                //Fill the tile in with green.
+            }
+            case SNAKE_HEAD -> {
                 graphics.setColor(Color.YELLOW);
                 graphics.fillOval(x, y, TILE_SIZE, TILE_SIZE);
-                break;
+            }
         }
     }
 

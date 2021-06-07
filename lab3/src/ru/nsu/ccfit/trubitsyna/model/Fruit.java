@@ -5,7 +5,7 @@ import ru.nsu.ccfit.trubitsyna.view.TileType;
 
 public class Fruit {
     private int fruitScore;
-    private TileType tileType ;
+    private final TileType tileType ;
     public Fruit() {
         this.fruitScore = 70;
         this.tileType = TileType.FRUIT;

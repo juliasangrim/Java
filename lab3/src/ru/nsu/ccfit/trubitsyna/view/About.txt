@@ -1,0 +1,12 @@
+Here some instructions:
+You can control game with button WASD or use Up, Down, Left, Right button.
+
+Author jul
+All rights reserved
+
+
+
+
+
+
+For back to menu press B.

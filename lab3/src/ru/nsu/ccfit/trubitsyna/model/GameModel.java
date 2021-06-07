@@ -1,24 +1,31 @@
 package ru.nsu.ccfit.trubitsyna.model;
 
+import ru.nsu.ccfit.trubitsyna.gameException.GameException;
 import ru.nsu.ccfit.trubitsyna.view.ViewState;
 import ru.nsu.ccfit.trubitsyna.view.TileType;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Random;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static java.lang.Integer.parseInt;
+import static ru.nsu.ccfit.trubitsyna.view.ViewState.GAME;
+import static ru.nsu.ccfit.trubitsyna.view.ViewState.RECORD;
+
 public class GameModel extends JFrame {
-    private CopyOnWriteArrayList<IListener> listeners = new CopyOnWriteArrayList<IListener>();
+    private final CopyOnWriteArrayList<IListener> listeners = new CopyOnWriteArrayList<>();
     private ViewState state;
-    private Board board;
-    private Random random;
+    private final Board board;
+    private final Random random;
     private Snake snake;
     private Fruit fruit;
-    private Deque<Directions> direction;
-    private int score;
+    private final Deque<Directions> direction;
+    private User user;
+    private final HashSet <User> highScores;
     private boolean isNewGame;
     private boolean isGameEnd;
     private boolean isPaused;
@@ -28,20 +35,23 @@ public class GameModel extends JFrame {
         this.snake = new Snake();
         this.random = new Random();
        // spawnFruit();
-        this.score = 0;
-        this.direction = new ArrayDeque<Directions>();
+        this.user = new User();
+        this.direction = new ArrayDeque<>();
         this.direction.push(Directions.UP);
         this.isNewGame = true;
         this.isGameEnd = false;
         this.state = ViewState.MENU;
+        this.highScores = new HashSet<>();
     }
 
-    private void resetGame() {
-        this.score = 0;
-        this.isGameEnd = false;
-        this.isNewGame = false;
+    public void resetGame(String name) {
+        user = new User();
+        user.score = 0;
+        user.name = name;
+        isGameEnd = false;
+        isNewGame = false;
         board.clear();
-        this.snake = new Snake();
+        snake = new Snake();
 
         Point head = new Point(board.getColumnCount() / 2, board.getRowCount() / 2);
         snake.addNewHead(head);
@@ -54,21 +64,21 @@ public class GameModel extends JFrame {
     }
 
     //notify listeners about changes
-    protected void notifyListeners() {
+    protected void notifyListeners() throws GameException {
         for (IListener listener : listeners) {
             notifyListener(listener);
         }
     }
 
-    private void notifyListener(IListener listener) {
+    private void notifyListener(IListener listener) throws GameException {
         if (listener == null) {
-            throw new NullPointerException("No listeners for our model...");
+            throw new GameException("No listeners for our model...");
         }
         listener.modelChanged(this);
     }
 
     //method for following our model changes
-    public void listen(IListener listener) {
+    public void listen(IListener listener) throws GameException {
         if (listener == null) {
             throw new NullPointerException("Empty param...");
         }
@@ -113,17 +123,20 @@ public class GameModel extends JFrame {
         return tile;
     }
 
-    public void startRound() {
+    public void startRound() throws IOException, GameException {
+       setHighScores();
         while (true) {
             if (state == ViewState.GAME) {
                 if (isNewGame) {
                     notifyListeners();
-                    resetGame();
                 }
                 if (!isGameEnd) {
                     if (!isPaused) {
                         updateGame();
                     }
+                }
+                if ((state == ViewState.RECORD) && (isGameEnd)) {
+                    addRecord(user);
                 }
             }
 
@@ -144,9 +157,10 @@ public class GameModel extends JFrame {
 
         if (collision == TileType.SNAKE_BODY) {
             isGameEnd = true;
+            state = RECORD;
         } else if (collision == TileType.FRUIT){
             snake.snakeEatFruit();
-            score += fruit.getFruitScore();
+            user.score += fruit.getFruitScore();
             spawnFruit();
         } else if (fruit.getFruitScore() > 20) {
             fruit.reduceFruitScore();
@@ -155,7 +169,7 @@ public class GameModel extends JFrame {
     }
 
     private void spawnFruit() {
-        this.fruit = new Fruit();
+        fruit = new Fruit();
         int place = random.nextInt(board.getColumnCount() * board.getRowCount() - snake.getSizeSnake());
         int freePlace = -1;
         for(int x = 0; x < board.getColumnCount(); x++) {
@@ -176,7 +190,7 @@ public class GameModel extends JFrame {
     }
 
     public Directions getDirection() {
-        return this.direction.peekLast();
+        return direction.peekLast();
     }
 
     public int getSizeArrayDirections() {
@@ -200,7 +214,7 @@ public class GameModel extends JFrame {
     }
 
     public int getScore() {
-        return score;
+        return user.score;
     }
 
     public int getAmountEatenFruit(){
@@ -212,20 +226,54 @@ public class GameModel extends JFrame {
     }
 
     public void setOnPause() {
-        this.isPaused = true;
+        isPaused = true;
     }
     public void setNewGame() {
-        this.isNewGame = true;
+        isNewGame = true;
     }
     public void offPause() {
-        this.isPaused = false;
+        isPaused = false;
     }
 
     public ViewState getGameState() {
-        return this.state;
+        return state;
     }
 
     public void setGameState(ViewState state) {
         this.state = state;
+    }
+
+    public void setHighScores() throws IOException {
+        String table = Files.readString(Paths.get("src/ru/nsu/ccfit/trubitsyna/model/table.data"));
+        for (String string : table.split("\r\n")) {
+            if (!string.equals("")) {
+                User userTmp = new User();
+                userTmp.name = string.split(";")[0];
+                userTmp.score = parseInt(string.split(";")[1]);
+                highScores.add(userTmp);
+
+            }
+        }
+    }
+
+    public Set<User> getHighScores() {
+        return highScores;
+    }
+
+    public void addRecord(User user) throws IOException {
+        state = GAME;
+        highScores.add(user);
+
+        NavigableSet<User> helper = new TreeSet<>(Comparator.comparing(u -> u.score));
+        helper.addAll(highScores);
+        if (helper.size() > 10) {
+            helper.remove(helper.first());
+        }
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("src/ru/nsu/ccfit/trubitsyna/model/table.data"))) {
+            for (User u : helper.descendingSet()) {
+                writer.write(u.name + ";" + u.score + "\r\n");
+            }
+        }
+
     }
 }
